@@ -18,8 +18,8 @@ namespace API.Controllers
             this.questionService = questionService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetQuestionById([FromQuery] Guid id)
+        [HttpGet("{id:Guid}")]
+        public async Task<IActionResult> GetQuestionById(Guid id)
         {
             return Ok(await questionService.GetQuestionByIdAsync(id));
         }
