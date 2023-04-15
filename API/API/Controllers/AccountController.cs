@@ -16,6 +16,7 @@ namespace API.Controllers
         }
         
         [HttpPost("Register")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> RegisterAsync(AccountRegDTO regDto)
         {
             var response = await accountService.RegisterAsync(regDto);
