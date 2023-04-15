@@ -5,7 +5,7 @@ import {ChatService} from "./services/chat.service";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"],
+  styleUrls: ["./app.component.scss"],
   providers: [WebsocketService, ChatService]
 })
 export class AppComponent {
