@@ -38,12 +38,16 @@ namespace API.Logic
             throw new NotImplementedException("Вопросы ебануть в кудато там нахуй");
         }
 
-        public async Task AddUser(Guid roomId, Guid userId)
+        public async Task AddUser(RoomUserDTO roomUser)
         {
-            var room = await dataContext.Rooms.FindAsync(roomId)
-                ?? throw new KeyNotFoundException($"Комната {roomId} уже удалена");
-            var user = await dataContext.Users.FindAsync(userId)
-                ?? throw new KeyNotFoundException($"Юзера {userId} не существует");
+            var room = await dataContext.Rooms.FindAsync(roomUser.RoomId)
+                ?? throw new KeyNotFoundException($"Комната {roomUser.RoomId} не существует");
+            var user = await dataContext.Users.FindAsync(roomUser.UserId)
+                ?? throw new KeyNotFoundException($"Юзера {roomUser.UserId} не существует");
+
+            if (room.Users.Contains(user))
+                throw new Exception($"Юзер {user.Id} уже добавлен в комнату {room.Id}");
+
             room.Users.Add(user);
             user.Rooms.Add(room);
             await dataContext.SaveChangesAsync();
@@ -55,6 +59,10 @@ namespace API.Logic
                 ?? throw new KeyNotFoundException($"Комната {roomUser.RoomId} уже удалена");
             var user = await dataContext.Users.FindAsync(roomUser.UserId)
                 ?? throw new KeyNotFoundException($"Юзера {roomUser.UserId} не существует");
+
+            if (!room.Users.Contains(user))
+                throw new Exception($"Юзера {user.Id} нет в комнате {room.Id}");
+
             room.Users.Remove(user);
             user.Rooms.Remove(room);
             await dataContext.SaveChangesAsync();
