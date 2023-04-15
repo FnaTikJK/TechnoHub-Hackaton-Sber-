@@ -1,21 +1,25 @@
+import re
+
 import requests
 import pyodbc
+import uuid
 
-cnxn = pyodbc.connect("Driver={SQL Server Native Client 11.0};Server=localhost\sqlexpress;Database=ScrumTwister;Trusted_Connection=yes;")
+cnxn = pyodbc.connect(("Driver={SQL Server Native Client 11.0};Server=localhost\sqlexpress;Database=ScrumTwister;Trusted_Connection=yes;"))
 resp = requests.get('https://retromat.org/api/activities?locale=ru').json()
-
-
-print('got_resp')
-print(resp[0])
 cursor = cnxn.cursor()
-query = ["insert into Questions(Title,Meaning,Text,Category) values"]
-for question in resp:
-    query.append(f'("{question["name"]}", "{question["summary"]}", "{question["desc"]}", 0),')
-q = ' '.join(query[:-1])
-print(q[:100])
-cursor.execute(q)
+query = """INSERT INTO Questions(Id, Title, Meaning, Text, Category) VALUES """
+last_q = None
+reg = re.compile(r'\'')
+print(len(list(filter(lambda x: x['phase'] == 0, resp))))
+try:
+    for question in filter(lambda x: x['phase'] == 0, resp):
+        name = re.sub(reg, '\'\'', question['name'])
+        summary = re.sub(reg, '\'\'', question['summary'])
+        text = re.sub(reg, '\'\'', question['desc'])
+        last_q = query + f"('{str(uuid.uuid4())}','{name}', '{summary}', '{text}', 0)" + ';'
+        cursor.execute(query + f"""('{str(uuid.uuid4())}','{name}', '{summary}', '{text}', {0})""" + ';')
+except:
+    print(last_q)
+    raise
 cursor.commit()
-#cursor.execute('SELECT * FROM Table')
 
-# for row in cursor:
-#     print('row = %r' % (row,))
