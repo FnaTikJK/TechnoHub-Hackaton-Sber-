@@ -5,11 +5,11 @@ namespace API.Hubs
 {
     public class RoomHub : Hub
     {
-        public async Task JoinRoom(string roomId, string userId)
+        public async Task JoinRoom(string roomId, User user)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
             await this.Clients.OthersInGroup(roomId)
-                .SendAsync("JoinUser", userId);
+                .SendAsync("JoinUser", user);
         }
 
         public async Task LeaveRoom(string roomId, string userId)
