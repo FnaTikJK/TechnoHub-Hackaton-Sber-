@@ -18,6 +18,9 @@ import { QuestionComponent } from './components/question/question.component';
 import {JoinRoomPopUpComponent} from "./components/pop-up/join-room/join-room-pop-up.component";
 import { RoomComponent } from './components/room/room.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { LoginComponent } from './components/authorization/login/login.component';
+import { RegistrationComponent } from './components/authorization/registration/registration.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -26,7 +29,9 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     CreateRoomPopUpComponent,
     QuestionComponent,
     JoinRoomPopUpComponent,
-    RoomComponent
+    RoomComponent,
+    LoginComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +45,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     ReactiveFormsModule,
     MatIconModule,
     MatCheckboxModule,
+    HttpClientModule,
     FormsModule,
     MatProgressSpinnerModule
   ],
