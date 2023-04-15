@@ -3,6 +3,7 @@ using API.DAL.Entities;
 using API.Logic.DTO.Room;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace API.Logic
 {
@@ -24,24 +25,39 @@ namespace API.Logic
             return room.Id;
         }
 
-        public Task DeleteRoom(Guid id)
+        public async Task DeleteRoom(Guid id)
         {
-            throw new NotImplementedException();
+            var room = await dataContext.Rooms.FindAsync(id)
+                ?? throw new KeyNotFoundException($"Комната {id} уже удалена");
+            dataContext.Rooms.Remove(room);
+            await dataContext.SaveChangesAsync();
         }
 
         public Task CloseRoom(RoomCloseDTO closeDto)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Вопросы ебануть в кудато там нахуй");
         }
 
-        public Task AddUser(Guid userId)
+        public async Task AddUser(Guid roomId, Guid userId)
         {
-            throw new NotImplementedException();
+            var room = await dataContext.Rooms.FindAsync(roomId)
+                ?? throw new KeyNotFoundException($"Комната {roomId} уже удалена");
+            var user = await dataContext.Users.FindAsync(userId)
+                ?? throw new KeyNotFoundException($"Юзера {userId} не существует");
+            room.Users.Add(user);
+            user.Rooms.Add(room);
+            await dataContext.SaveChangesAsync();
         }
 
-        public Task DeleteUser(Guid userId)
+        public async Task DeleteUser(RoomUserDTO roomUser)
         {
-            throw new NotImplementedException();
+            var room = await dataContext.Rooms.FindAsync(roomUser.RoomId)
+                ?? throw new KeyNotFoundException($"Комната {roomUser.RoomId} уже удалена");
+            var user = await dataContext.Users.FindAsync(roomUser.UserId)
+                ?? throw new KeyNotFoundException($"Юзера {roomUser.UserId} не существует");
+            room.Users.Remove(user);
+            user.Rooms.Remove(room);
+            await dataContext.SaveChangesAsync();
         }
     }
 }
