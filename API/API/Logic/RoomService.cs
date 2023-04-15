@@ -18,7 +18,7 @@ namespace API.Logic
             this.mapper = mapper;
         }
 
-        public async Task<Room> GetRoomByIdAsync(Guid roomId, Guid userId)
+        public async Task<RoomOutDTO> GetRoomByIdAsync(Guid roomId, Guid userId)
         {
             var room =  await dataContext.Rooms
                 .AsNoTrackingWithIdentityResolution()
@@ -27,7 +27,7 @@ namespace API.Logic
                 .FirstOrDefaultAsync(e => e.Id == roomId);
             if (room.Users.First().Id != userId)
                 room.Questions = null;
-            return room;
+            return mapper.Map<RoomOutDTO>(room);
         }
 
         public async Task<Guid> CreateRoomAsync(RoomCreateDTO createDto)

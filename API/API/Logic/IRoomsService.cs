@@ -5,7 +5,7 @@ namespace API.Logic
 {
     public interface IRoomsService
     {
-        public Task<Room> GetRoomByIdAsync(Guid roomId, Guid userId);
+        public Task<RoomOutDTO> GetRoomByIdAsync(Guid roomId, Guid userId);
         public Task<Guid> CreateRoomAsync(RoomCreateDTO createDto);
         public Task DeleteRoom(Guid roomId, Guid userId);
         public Task CloseRoomAsync(RoomCloseDTO closeDto);

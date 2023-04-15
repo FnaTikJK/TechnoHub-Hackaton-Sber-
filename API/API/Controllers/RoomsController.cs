@@ -22,6 +22,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpGet("{roomId:Guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type=typeof(RoomOutDTO))]
         public async Task<IActionResult> GetRoomByIdAsync([FromRoute] Guid roomId)
         {
             return Ok(await roomsService.GetRoomByIdAsync(roomId, HttpContext.User.GetId()));

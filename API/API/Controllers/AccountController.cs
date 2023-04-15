@@ -1,4 +1,5 @@
-﻿using API.Logic;
+﻿using API.DAL.Entities;
+using API.Logic;
 using API.Logic.DTO.Account;
 using Microsoft.AspNetCore.Mvc;
 
