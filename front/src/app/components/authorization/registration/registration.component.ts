@@ -35,7 +35,7 @@ export class RegistrationComponent implements AfterViewInit{
   }
 
   public signUp(): void{
-    this.httpRequestS.register(this.form.value).subscribe(v => alert("антон пидор"));
+    this.httpRequestS.register(this.form.value).subscribe(v => console.log(v));
   }
 
   public redirectToSignIn(): void{
