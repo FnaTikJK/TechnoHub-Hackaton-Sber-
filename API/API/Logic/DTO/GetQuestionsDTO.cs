@@ -4,9 +4,9 @@
     {
         public int normalQuestionsCount { get; set; }
 
-        public int roflQuestionsFrequency { get; set; }
-        public List<Guid> usedQuestions { get; set; }
-        public int TotalQuestionsCount() => normalQuestionsCount + roflQuestionsFrequency;
+        public int? roflQuestionsFrequency { get; set; }
+        public List<Guid>? usedQuestions { get; set; } = new List<Guid>();
+        public int TotalQuestionsCount() => normalQuestionsCount + (roflQuestionsFrequency ?? 0);
 
     }
 }
