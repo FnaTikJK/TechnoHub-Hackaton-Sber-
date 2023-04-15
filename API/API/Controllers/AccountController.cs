@@ -6,7 +6,6 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Produces("application/json")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService accountService;
@@ -15,13 +14,14 @@ namespace API.Controllers
         {
             this.accountService = accountService;
         }
-        [Produces("application/json")]
+        
         [HttpPost("Register")]
         public async Task<IActionResult> RegisterAsync(AccountRegDTO regDto)
         {
             var response = await accountService.RegisterAsync(regDto);
 
-            return response.IsSuccess ? Ok(response.Value) 
+            return response.IsSuccess
+                ? Ok(new {token = response.Value})
                 : BadRequest(response.Error);
         }
 
@@ -30,7 +30,8 @@ namespace API.Controllers
         {
             var response = await accountService.LoginAsync(authDto);
 
-            return response.IsSuccess ? Ok(response.Value)
+            return response.IsSuccess
+                ? Ok(new {token = response.Value})
                 : BadRequest(response.Error);
         }
     }
