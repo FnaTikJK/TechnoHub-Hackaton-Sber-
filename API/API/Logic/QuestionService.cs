@@ -32,13 +32,17 @@ namespace API.Logic
             var current = 0;
             while(current < getQuestionsDto.TotalQuestionsCount())
             {
-                var category = current != 0 && current % getQuestionsDto.roflQuestionsFrequency == 0 ?
+                var category = current != 0 && getQuestionsDto.roflQuestionsFrequency != null 
+                                            && current % getQuestionsDto.roflQuestionsFrequency == 0 ?
                     Category.Rofl :
                     Category.AtmosphereCreation;
 
                 var newQuestion = dataContext.Questions
                     .Where(e => e.Category == category && !used.Contains(e.Id))
                     .GetRandom();
+                if (newQuestion == null)
+                    break;
+
                 questions.Add(newQuestion);
                 used.Add(newQuestion.Id);
                 current++;
@@ -58,8 +62,8 @@ namespace API.Logic
         public static T GetRandom<T>(this IEnumerable<T> enumerable)
         {
             return enumerable
-                .Skip(new Random().Next(0, enumerable.Count()-1))
-                .First();
+                .Skip(new Random().Next(0, Math.Max(0, enumerable.Count()-1)))
+                .FirstOrDefault();
         }
     }
 }
