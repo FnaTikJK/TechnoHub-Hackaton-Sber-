@@ -10,7 +10,7 @@ namespace API.Logic
     public class QuestionService : IQuestionService
     {
         private readonly DataContext dataContext;
-
+        
         public QuestionService(DataContext dataContext)
         {
             this.dataContext = dataContext;
@@ -28,7 +28,7 @@ namespace API.Logic
         public IEnumerable<Question> GetRandomQuestionsByCategories(GetQuestionsDTO getQuestionsDto)
         {
             var questions = new List<Question>();
-            var used = new HashSet<Guid>();
+            var used = new HashSet<Guid>(getQuestionsDto.usedQuestions);
             var current = 0;
             while(current < getQuestionsDto.TotalQuestionsCount())
             {
