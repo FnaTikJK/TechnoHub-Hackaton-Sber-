@@ -1,1 +1,3 @@
-export interface IAuthentication = IRegi
+export interface IAuthentication{
+  token: string;
+}
