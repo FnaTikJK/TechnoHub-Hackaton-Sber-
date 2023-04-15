@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService accountService;
@@ -15,7 +15,7 @@ namespace API.Controllers
             this.accountService = accountService;
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<IActionResult> RegisterAsync(AccountRegDTO regDto)
         {
             var response = await accountService.RegisterAsync(regDto);
@@ -24,7 +24,7 @@ namespace API.Controllers
                 : BadRequest(response.Error);
         }
 
-        [HttpGet]
+        [HttpPost("Login")]
         public async Task<IActionResult> LoginAsync(AccountAuthDTO authDto)
         {
             var response = await accountService.LoginAsync(authDto);

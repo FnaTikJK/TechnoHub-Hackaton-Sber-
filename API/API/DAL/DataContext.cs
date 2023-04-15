@@ -7,15 +7,11 @@ namespace API.DAL
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            //Init();
-        }
-
-        private void Init()
-        {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //DbInitializer.Initialize(this);
         }
 
         public DbSet<User> Users => Set<User>();
+        public DbSet<Question> Questions => Set<Question>();
+        public DbSet<Room> Rooms => Set<Room>();
     }
 }

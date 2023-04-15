@@ -8,6 +8,7 @@ using API.Logic;
 using API.Logic.Helpers;
 using API.Logic.Helpers.Mapper;
 using Swashbuckle.AspNetCore.Filters;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,9 +52,17 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.EnableSensitiveDataLogging(true);
 });
 
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IJWTParser, JWTParser>();
 builder.Services.AddAutoMapper(typeof(AccountMappingProfile));
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IRoomsService, RoomService>();
+builder.Services.AddAutoMapper(typeof(RoomMappingProfile));
 
 var app = builder.Build();
 
