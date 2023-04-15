@@ -1,0 +1,7 @@
+<div class="wrapper">
+  <ng-container *ngIf="loading$ | async">
+    <mat-spinner></mat-spinner>
+    <p>Ожидание участников</p>
+  </ng-container>
+  <button (click) = "load()">Change loading</button>
+</div>
