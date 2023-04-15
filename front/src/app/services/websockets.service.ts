@@ -1,36 +1,21 @@
 import { Injectable } from "@angular/core";
 import {Observable, Observer, Subject} from "rxjs";
+import {SignalrClient, SignalrConnection} from "ngx-signalr-websocket";
+import {HttpClient} from "@angular/common/http";
+import {IHubMessage} from "ngx-signalr-websocket/lib/protocol";
 
 @Injectable()
 export class WebsocketService {
-  constructor() {}
 
-  private subject!: Subject<MessageEvent>;
-
-  public connect(url: string): Subject<MessageEvent> {
-    if (!this.subject) {
-      this.subject = this.create(url);
-      console.log("Successfully connected: " + url);
-    }
-    return this.subject;
-  }
-
-  private create(url: string): Subject<MessageEvent> {
-    let ws = new WebSocket(url);
-
-    let observable = Observable.create((obs: Observer<MessageEvent>) => {
-      ws.onmessage = obs.next.bind(obs);
-      ws.onerror = obs.error.bind(obs);
-      ws.onclose = obs.complete.bind(obs);
-      return ws.close.bind(ws);
+  public socket!: SignalrConnection;
+  constructor(private httpClient: HttpClient) {
+    new SignalrClient(this.httpClient).connect("https://localhost:55434/Room").subscribe(v =>{
+      this.socket = v;
     });
-    let observer = {
-      next: (data: Object) => {
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify(data));
-        }
-      }
-    };
-    return Subject.create(observer, observable);
+    // new SignalrConnection("https://localhost:55434/Room", {
+    //   serialize: (messages: any) => "",
+    //   deserialize: (messageEvent: any) => <IHubMessage>{}
+    // })
   }
+
 }

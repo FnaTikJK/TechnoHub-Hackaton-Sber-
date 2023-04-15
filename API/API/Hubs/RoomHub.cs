@@ -10,11 +10,11 @@ namespace API.Hubs
             await Clients.All.SendAsync("Send", message);
         }
 
-        public async Task JoinRoom(string roomId, User user)
+        public async Task JoinRoom(string roomId, string userId,string name)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
             await this.Clients.OthersInGroup(roomId)
-                .SendAsync("JoinUser", user);
+                .SendAsync("JoinUser",userId, name);
         }
 
         public async Task LeaveRoom(string roomId, string userId)

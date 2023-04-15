@@ -24,6 +24,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {HttpRequestsService} from "./services/http-requests.service";
 import {MatExpansionModule} from "@angular/material/expansion";
+import {WebsocketService} from "./services/websockets.service";
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
     MatExpansionModule
   ],
   providers: [
+    WebsocketService,
     HttpRequestsService,
     {
       provide: HTTP_INTERCEPTORS,

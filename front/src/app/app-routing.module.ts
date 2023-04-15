@@ -6,7 +6,6 @@ import {QuestionComponent} from "./components/question/question.component";
 import {RoomComponent} from "./components/room/room.component";
 import {LoginComponent} from "./components/authorization/login/login.component";
 import {RegistrationComponent} from "./components/authorization/registration/registration.component";
-import {AppComponent} from "./app.component";
 
 const routes: Routes = [
   {path: "login", component: LoginComponent},
@@ -15,7 +14,7 @@ const routes: Routes = [
   {path: "pop", component: CreateRoomPopUpComponent},
   {path: "question", component: QuestionComponent},
   {path: "room", component: RoomComponent},
-  {path: "", component: AppComponent, pathMatch: "full"}
+  {path: "", redirectTo: "main", pathMatch: "full"}
 ];
 
 @NgModule({
