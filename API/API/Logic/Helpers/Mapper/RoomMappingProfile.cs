@@ -14,6 +14,9 @@ namespace API.Logic.Helpers.Mapper
                 .ForMember(dest => dest.Users, opt => opt.ConvertUsing<UserConverter, Guid?>(src => src.CreatorId))
                 .ForMember(dest => dest.Questions, opt => 
                     opt.ConvertUsing<QuestionsConverter, List<Guid>>(src => src.QuestionsId));
+            CreateMap<RoomCloseDTO, Room>()
+                .ForMember(dest => dest.Questions, opt =>
+                    opt.ConvertUsing<QuestionsConverter, List<Guid>>(src => src.QuestionsId));
         }
     }
 

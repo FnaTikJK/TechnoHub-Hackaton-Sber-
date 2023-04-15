@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using API.DAL;
 using API.Extensions;
 using API.Logic;
 using API.Logic.DTO.Room;
@@ -17,6 +18,13 @@ namespace API.Controllers
         public RoomsController(IRoomsService roomsService)
         {
             this.roomsService = roomsService;
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetRoomByIdAsync(Guid roomId)
+        {
+            return Ok(await roomsService.GetRoomByIdAsync(roomId, HttpContext.User.GetId()));
         }
 
         [Authorize]
