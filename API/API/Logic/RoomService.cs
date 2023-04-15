@@ -18,10 +18,23 @@ namespace API.Logic
             this.mapper = mapper;
         }
 
+        public async Task<Room> GetRoomByIdAsync(Guid roomId, Guid userId)
+        {
+            var room =  await dataContext.Rooms
+                .AsNoTrackingWithIdentityResolution()
+                .Include(e => e.Users)
+                .Include(e => e.Questions)
+                .FirstOrDefaultAsync(e => e.Id == roomId);
+            if (room.Users.First().Id != userId)
+                room.Questions = null;
+            return room;
+        }
+
         public async Task<Guid> CreateRoomAsync(RoomCreateDTO createDto)
         {
             var room = mapper.Map<Room>(createDto);
             await dataContext.Rooms.AddAsync(room);
+            await dataContext.SaveChangesAsync();
             return room.Id;
         }
 
@@ -30,7 +43,10 @@ namespace API.Logic
             var room = dataContext.Rooms.Include(e => e.Users)
                 .FirstOrDefault(e => e.Id == deleteDto.RoomId && e.Users.First().Id == deleteDto.CreatorId);
             if (room != null)
+            {
                 dataContext.Rooms.Remove(room);
+                await dataContext.SaveChangesAsync();
+            }
         }
 
         public async Task CloseRoomAsync(RoomCloseDTO closeDto)
@@ -40,6 +56,7 @@ namespace API.Logic
             if (room != null)
             {
                 mapper.Map(closeDto, room);
+                await dataContext.SaveChangesAsync();
             }
         }
 
