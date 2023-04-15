@@ -10,5 +10,7 @@ namespace API.DAL.Entities
         public string Meaning { get; set; }
         public string Text { get; set; }
         public byte[]? Image { get; set; }
+
+        public List<Room> Rooms { get; set; }
     }
 }
