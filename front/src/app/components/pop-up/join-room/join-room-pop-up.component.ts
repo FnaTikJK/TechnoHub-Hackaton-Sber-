@@ -4,7 +4,7 @@ import {MatDialogRef} from "@angular/material/dialog";
 import {HttpRequestsService} from "../../../services/http-requests.service";
 import {Router} from "@angular/router";
 import {switchMap} from "rxjs";
-import {AppSignalrService} from "../../../services/websockets.service";
+import {ChatService} from "../../../services/chat.service";
 
 @Component({
   selector: 'app-pop-up',
@@ -13,20 +13,30 @@ import {AppSignalrService} from "../../../services/websockets.service";
 })
 export class JoinRoomPopUpComponent {
   @ViewChild("roomID") roomInputRef!: ElementRef<HTMLInputElement>;
+  private message = {
+    author: "nik",
+    message: "howdy folks"
+  }
   constructor(
     private dialogRef: MatDialogRef<JoinRoomPopUpComponent>,
     private httpRequestS: HttpRequestsService,
     private router: Router,
-    private socket: AppSignalrService
-  ) {}
+    private chatS: ChatService
+  ) {    this.chatS.messages.subscribe(msg => {
+    console.log("Response from WS Server " + msg)
+  });}
 
   closeDialog(){
     this.dialogRef.close();
   }
 
+  sendMsg(){
+    console.log("New Msg sent");
+    this.chatS.messages.next(this.message);
+  }
   joinRoom(){
+    this.sendMsg();
     const roomGUId = this.roomInputRef.nativeElement.value;
-    this.socket.sentToServer(roomGUId);
     this.httpRequestS.getRoomById(roomGUId)
       .subscribe( res =>
       this.router.navigate(["room"], {queryParams: {roomId: roomGUId}}));
