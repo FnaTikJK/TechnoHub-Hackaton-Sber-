@@ -12,9 +12,7 @@ namespace API.Logic.Helpers.Mapper
         public RoomMappingProfile()
         {
             CreateMap<RoomCreateDTO, Room>()
-                .ForMember(dest => dest.Users, opt => opt.ConvertUsing<UserConverter, Guid?>(src => src.CreatorId))
-                .ForMember(dest => dest.Questions, opt => 
-                    opt.ConvertUsing<QuestionsConverter, List<Guid>>(src => src.QuestionsId));
+                .ForMember(dest => dest.Users, opt => opt.ConvertUsing<UserConverter, Guid?>(src => src.CreatorId));
             CreateMap<RoomCloseDTO, Room>()
                 .ForMember(dest => dest.Questions, opt =>
                     opt.ConvertUsing<QuestionsConverter, List<Guid>>(src => src.QuestionsId));

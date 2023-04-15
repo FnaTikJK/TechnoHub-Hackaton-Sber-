@@ -25,7 +25,7 @@ namespace API.Logic
                 .Include(e => e.Users)
                 .Include(e => e.Questions)
                 .FirstOrDefaultAsync(e => e.Id == roomId);
-            if (room.Users.First().Id != userId)
+            if (room != null && room.Users.First().Id != userId)
                 room.Questions = null;
             return mapper.Map<RoomOutDTO>(room);
         }
