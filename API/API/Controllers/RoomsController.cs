@@ -1,10 +1,7 @@
-﻿using System.Security.Claims;
-using API.DAL;
-using API.Extensions;
+﻿using API.Extensions;
 using API.Logic;
 using API.Logic.DTO.Room;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -22,6 +19,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpGet("{roomId:Guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type=typeof(RoomOutDTO))]
         public async Task<IActionResult> GetRoomByIdAsync([FromRoute] Guid roomId)
         {
             return Ok(await roomsService.GetRoomByIdAsync(roomId, HttpContext.User.GetId()));
@@ -32,7 +30,8 @@ namespace API.Controllers
         public async Task<IActionResult> CreateRoomAsync(RoomCreateDTO createDto)
         {
             createDto.CreatorId = HttpContext.User.GetId();
-            return Ok(await roomsService.CreateRoomAsync(createDto));
+            var id = await roomsService.CreateRoomAsync(createDto);
+            return Ok(new { id });
         }
 
         [Authorize]
