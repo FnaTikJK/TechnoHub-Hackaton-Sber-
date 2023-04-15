@@ -24,14 +24,22 @@ namespace API.Logic
             return room.Id;
         }
 
-        public Task DeleteRoom(Guid id)
+        public async Task DeleteRoom(DeleteRoomDTO deleteDto)
         {
-            throw new NotImplementedException();
+            var room = dataContext.Rooms.Include(e => e.Users)
+                .FirstOrDefault(e => e.Id == deleteDto.RoomId && e.Users.First().Id == deleteDto.CreatorId);
+            if (room != null)
+                dataContext.Rooms.Remove(room);
         }
 
-        public Task CloseRoom(RoomCloseDTO closeDto)
+        public async Task CloseRoomAsync(RoomCloseDTO closeDto)
         {
-            throw new NotImplementedException();
+            var room = await dataContext.Rooms.Include(e => e.Users)
+                .FirstOrDefaultAsync(e => e.Id == closeDto.RoomId && e.Users.First().Id == closeDto.CreatorId);
+            if (room != null)
+            {
+                mapper.Map(closeDto, room);
+            }
         }
 
         public Task AddUser(Guid userId)
