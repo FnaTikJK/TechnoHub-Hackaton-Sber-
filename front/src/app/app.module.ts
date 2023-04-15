@@ -20,7 +20,9 @@ import { RoomComponent } from './components/room/room.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { LoginComponent } from './components/authorization/login/login.component';
 import { RegistrationComponent } from './components/authorization/registration/registration.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {AuthInterceptor} from "./interceptors/auth.interceptor";
+import {HttpRequestsService} from "./services/http-requests.service";
 
 @NgModule({
   declarations: [
@@ -49,7 +51,14 @@ import {HttpClientModule} from "@angular/common/http";
     FormsModule,
     MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [
+    HttpRequestsService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

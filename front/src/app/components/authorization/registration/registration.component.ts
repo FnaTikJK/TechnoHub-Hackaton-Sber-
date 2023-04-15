@@ -25,7 +25,7 @@ export class RegistrationComponent implements AfterViewInit{
   constructor
   (
     private router: Router,
-    private httpRequestS: HttpRequestsService
+    private httpRequestsS: HttpRequestsService
   ) {}
 
   public ngAfterViewInit(): void {
@@ -36,7 +36,11 @@ export class RegistrationComponent implements AfterViewInit{
   }
 
   public signUp(): void{
-    this.httpRequestS.register(this.form.value).subscribe(v => console.log((v as any).token));
+    this.httpRequestsS.register(this.form.value)
+      .subscribe(res => {
+        this.httpRequestsS.setToken(res.token);
+        this.router.navigate(["main"]);
+      });
   }
 
   public redirectToSignIn(): void{

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
+import {HttpRequestsService} from "../../../services/http-requests.service";
 
 @Component({
   selector: 'app-pop-up',
@@ -8,7 +9,11 @@ import {MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./join-room-pop-up.scss']
 })
 export class JoinRoomPopUpComponent {
-  constructor(private dialogRef: MatDialogRef<JoinRoomPopUpComponent>) {}
+  @ViewChild("roomID") roomInputRef!: ElementRef<HTMLInputElement>;
+  constructor(
+    private dialogRef: MatDialogRef<JoinRoomPopUpComponent>,
+    private httpRequestS: HttpRequestsService
+  ) {}
 
   closeDialog(){
     console.log("Закрытие");
@@ -16,7 +21,7 @@ export class JoinRoomPopUpComponent {
   }
 
   joinRoom(){
-    console.log("Присоединение");
+    this.httpRequestS.getRoomById(this.roomInputRef.nativeElement.value).subscribe();
     this.closeDialog();
   }
 }

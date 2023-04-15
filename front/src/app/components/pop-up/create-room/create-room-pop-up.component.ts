@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
+import {HttpRequestsService} from "../../../services/http-requests.service";
 
 @Component({
   selector: 'app-pop-up',
@@ -10,18 +11,17 @@ import {Router} from "@angular/router";
 })
 export class CreateRoomPopUpComponent {
   public form: FormGroup = new FormGroup({
-    roomName: new FormControl("Комната"),
-    sideQuestions: new FormControl(false),
-    sideQuestionsFrequency: new FormControl(1)
+    roomName: new FormControl("Комната")
   })
 
-  constructor(private dialogRef: MatDialogRef<CreateRoomPopUpComponent>, private router: Router) {}
+  constructor(private dialogRef: MatDialogRef<CreateRoomPopUpComponent>, private router: Router, private httpRequestsS: HttpRequestsService) {}
 
   closeDialog(){
     this.dialogRef.close(this.form.value);
   }
 
   createRoom(){
+    this.httpRequestsS.postRoom(this.form.value);
     this.closeDialog();
     this.router.navigate(["room"]);
   }

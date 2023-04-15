@@ -3,6 +3,7 @@ import {FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/f
 import {Router} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {spaceValidator} from "../../../validators/spaceValidator";
+import {HttpRequestsService} from "../../../services/http-requests.service";
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements AfterViewInit{
 
   constructor
   (
-    private router: Router
+    private router: Router,
+    private httpRequestsS: HttpRequestsService
   ) {}
 
   public ngAfterViewInit(): void {
@@ -34,7 +36,11 @@ export class LoginComponent implements AfterViewInit{
   }
 
   public signIn(): void{
-
+    this.httpRequestsS.login(this.form.value)
+      .subscribe(res => {
+        this.httpRequestsS.setToken(res.token);
+        this.router.navigate(["main"]);
+      });
   }
 
   public redirectToSignUp(): void{
