@@ -7,7 +7,7 @@ namespace API.DAL
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            //DbInitializer.Initialize(this);
+            DbInitializer.Initialize(this);
         }
 
         public DbSet<User> Users => Set<User>();
