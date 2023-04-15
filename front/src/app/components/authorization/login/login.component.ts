@@ -2,6 +2,7 @@ import {AfterViewInit, ChangeDetectionStrategy, Component, Inject, ViewChild} fr
 import {FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
+import {spaceValidator} from "../../../validators/spaceValidator";
 
 @Component({
   selector: 'app-login',
@@ -14,8 +15,8 @@ export class LoginComponent implements AfterViewInit{
   @ViewChild('myForm') formRef!: FormGroupDirective;
 
   public form: FormGroup = new FormGroup({
-    login: new FormControl("", [Validators.required]),
-    password: new FormControl("", [Validators.required, Validators.minLength(1), Validators.maxLength(15)])
+    login: new FormControl("", [Validators.required, spaceValidator()]),
+    password: new FormControl("", [Validators.required, Validators.minLength(1), Validators.maxLength(15), spaceValidator()])
   });
 
   public incorrectAccountError$: BehaviorSubject<Error | null> = new BehaviorSubject<Error | null>(null);

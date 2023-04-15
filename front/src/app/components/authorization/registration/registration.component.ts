@@ -3,6 +3,7 @@ import {FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/f
 import {Router} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {HttpRequestsService} from "../../../services/http-requests.service";
+import {spaceValidator} from "../../../validators/spaceValidator";
 
 @Component({
   selector: 'app-registration',
@@ -14,9 +15,9 @@ export class RegistrationComponent implements AfterViewInit{
 
   @ViewChild('myForm') formRef!: FormGroupDirective;
   public form: FormGroup = new FormGroup({
-    login: new FormControl<string>("", [Validators.required, Validators.minLength(1), Validators.maxLength(15)]),
+    login: new FormControl<string>("", [Validators.required, Validators.minLength(1), Validators.maxLength(15), spaceValidator()]),
     name: new FormControl<string>("", [Validators.required, Validators.minLength(1), Validators.maxLength(15)]),
-    password: new FormControl<string>("", [Validators.required, Validators.minLength(1), Validators.maxLength(15)]),
+    password: new FormControl<string>("", [Validators.required, Validators.minLength(1), Validators.maxLength(15), spaceValidator()]),
   });
 
   public incorrectAccountError$: BehaviorSubject<Error | null> = new BehaviorSubject<Error | null>(null);
@@ -35,7 +36,7 @@ export class RegistrationComponent implements AfterViewInit{
   }
 
   public signUp(): void{
-    this.httpRequestS.register(this.form.value).subscribe(v => console.log(v));
+    this.httpRequestS.register(this.form.value).subscribe(v => console.log((v as any).token));
   }
 
   public redirectToSignIn(): void{
