@@ -1,0 +1,15 @@
+<div class="wrapper">
+  <div>
+    <h1>{{question.title}}</h1>
+    <h2>{{question.meaning}}</h2>
+    <p>{{question.text}}</p>
+    <div>
+      <mat-form-field class="answer">
+        <mat-label>Ваш ответ</mat-label>
+        <input matInput [(ngModel)]="answerText">
+      </mat-form-field>
+    </div>
+      <button class="btn" mat-flat-button color="primary" (click) = "answerQuestion()">Ответить</button>
+  </div>
+</div>
+

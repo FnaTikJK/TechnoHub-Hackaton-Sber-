@@ -1,0 +1,16 @@
+<form [formGroup]="form" class="form" mat-dialog-content>
+  <button class="form__close" mat-icon-button (click) = "closeDialog()">
+    <mat-icon>close</mat-icon>
+  </button>
+  <h1 class="form__title">Комната</h1>
+  <div>
+    <mat-form-field class="form__field">
+      <mat-label>Название комнаты</mat-label>
+      <input matInput formControlName = "name">
+    </mat-form-field>
+  </div>
+  <div>
+    <button class="form__btn" mat-flat-button color="primary" (click) = "createRoom()">Создать</button>
+  </div>
+</form>
+

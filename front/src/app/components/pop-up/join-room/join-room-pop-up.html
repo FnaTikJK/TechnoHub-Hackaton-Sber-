@@ -1,0 +1,16 @@
+<form class = "form" mat-dialog-content>
+  <h1 class="form__title">Присоединение</h1>
+  <button class="form__close" mat-icon-button (click) = "closeDialog()">
+    <mat-icon>close</mat-icon>
+  </button>
+  <div>
+      <mat-form-field class="form__field">
+        <mat-label>Идентификатор комнаты</mat-label>
+        <input #roomID matInput>
+      </mat-form-field>
+    </div>
+    <div>
+      <button class="form__btn" mat-flat-button color="primary" (click) = "joinRoom()">Присоединиться</button>
+    </div>
+</form>
+
