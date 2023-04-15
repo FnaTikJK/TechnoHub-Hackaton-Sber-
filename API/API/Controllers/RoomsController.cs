@@ -21,8 +21,8 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> GetRoomByIdAsync(Guid roomId)
+        [HttpGet("{roomId:Guid}")]
+        public async Task<IActionResult> GetRoomByIdAsync([FromRoute] Guid roomId)
         {
             return Ok(await roomsService.GetRoomByIdAsync(roomId, HttpContext.User.GetId()));
         }
@@ -36,11 +36,10 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpDelete]
-        public async Task<IActionResult> DeleteRoomAsync(DeleteRoomDTO deleteDto)
+        [HttpDelete("{roomId:Guid}")]
+        public async Task<IActionResult> DeleteRoomAsync([FromRoute] Guid roomId)
         {
-            deleteDto.CreatorId = HttpContext.User.GetId();
-            await roomsService.DeleteRoom(deleteDto);
+            await roomsService.DeleteRoom(roomId, HttpContext.User.GetId());
             return NoContent();
         }
 

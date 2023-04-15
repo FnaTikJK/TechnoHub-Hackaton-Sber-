@@ -38,10 +38,10 @@ namespace API.Logic
             return room.Id;
         }
 
-        public async Task DeleteRoom(DeleteRoomDTO deleteDto)
+        public async Task DeleteRoom(Guid roomId, Guid userId)
         {
             var room = dataContext.Rooms.Include(e => e.Users)
-                .FirstOrDefault(e => e.Id == deleteDto.RoomId && e.Users.First().Id == deleteDto.CreatorId);
+                .FirstOrDefault(e => e.Id == roomId && e.Users.First().Id == userId);
             if (room != null)
             {
                 dataContext.Rooms.Remove(room);

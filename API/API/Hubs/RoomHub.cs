@@ -14,9 +14,15 @@ namespace API.Hubs
 
         public async Task LeaveRoom(string roomId, string userId)
         {
-            await this.Clients.OthersInGroup(roomId)
+            await Clients.OthersInGroup(roomId)
                 .SendAsync("LeaveUser", userId);
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
+        }
+
+        public async Task NextQuestion(string roomId, Question question)
+        {
+            await Clients.OthersInGroup(roomId)
+                .SendAsync("NextQuestion", question);
         }
     }
 }
