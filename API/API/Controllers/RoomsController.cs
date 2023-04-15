@@ -26,7 +26,23 @@ namespace API.Controllers
             createDto.CreatorId = HttpContext.User.GetId();
             return Ok(await roomsService.CreateRoomAsync(createDto));
         }
+
+        [Authorize]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteRoomAsync(DeleteRoomDTO deleteDto)
+        {
+            deleteDto.CreatorId = HttpContext.User.GetId();
+            await roomsService.DeleteRoom(deleteDto);
+            return NoContent();
+        }
+
+        [Authorize]
+        [HttpPatch]
+        public async Task<IActionResult> CloseRoomAsync(RoomCloseDTO closeDto)
+        {
+            closeDto.CreatorId = HttpContext.User.GetId();
+            await roomsService.CloseRoomAsync(closeDto);
+            return NoContent();
+        }
     }
-
-
 }
