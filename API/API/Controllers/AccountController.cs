@@ -6,6 +6,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Produces("application/json")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService accountService;
@@ -14,7 +15,7 @@ namespace API.Controllers
         {
             this.accountService = accountService;
         }
-
+        [Produces("application/json")]
         [HttpPost("Register")]
         public async Task<IActionResult> RegisterAsync(AccountRegDTO regDto)
         {
