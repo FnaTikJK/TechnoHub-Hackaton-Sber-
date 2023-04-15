@@ -9,6 +9,7 @@ using API.Logic.Helpers;
 using API.Logic.Helpers.Mapper;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text.Json.Serialization;
+using API.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
+builder.Services.AddSignalR();
+
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IJWTParser, JWTParser>();
 builder.Services.AddAutoMapper(typeof(AccountMappingProfile));
@@ -76,7 +79,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
+
+app.MapHub<RoomHub>("/Room");
 
 app.Run();
