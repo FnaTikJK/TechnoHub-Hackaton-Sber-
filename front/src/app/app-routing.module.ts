@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {inject, NgModule} from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {MainComponent} from "./components/main/main.component";
 import {CreateRoomPopUpComponent} from "./components/pop-up/create-room/create-room-pop-up.component";

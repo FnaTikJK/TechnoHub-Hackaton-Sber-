@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
@@ -11,9 +11,8 @@ import {HttpRequestsService} from "../../../services/http-requests.service";
 })
 export class CreateRoomPopUpComponent {
   public form: FormGroup = new FormGroup({
-    roomName: new FormControl("Комната")
+    name: new FormControl("Комната")
   })
-
   constructor(private dialogRef: MatDialogRef<CreateRoomPopUpComponent>, private router: Router, private httpRequestsS: HttpRequestsService) {}
 
   closeDialog(){
@@ -21,8 +20,11 @@ export class CreateRoomPopUpComponent {
   }
 
   createRoom(){
-    this.httpRequestsS.postRoom(this.form.value);
+    this.httpRequestsS.postRoom(this.form.value)
+      .subscribe(res => {
+        this.router.navigate(["room"],
+          {queryParams: { roomId: res.id }});
+      });
     this.closeDialog();
-    this.router.navigate(["room"]);
   }
 }

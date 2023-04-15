@@ -2,6 +2,9 @@ import {Component, ElementRef, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {HttpRequestsService} from "../../../services/http-requests.service";
+import {Router} from "@angular/router";
+import {switchMap} from "rxjs";
+import {AppSignalrService} from "../../../services/websockets.service";
 
 @Component({
   selector: 'app-pop-up',
@@ -12,16 +15,21 @@ export class JoinRoomPopUpComponent {
   @ViewChild("roomID") roomInputRef!: ElementRef<HTMLInputElement>;
   constructor(
     private dialogRef: MatDialogRef<JoinRoomPopUpComponent>,
-    private httpRequestS: HttpRequestsService
+    private httpRequestS: HttpRequestsService,
+    private router: Router,
+    private socket: AppSignalrService
   ) {}
 
   closeDialog(){
-    console.log("Закрытие");
     this.dialogRef.close();
   }
 
   joinRoom(){
-    this.httpRequestS.getRoomById(this.roomInputRef.nativeElement.value).subscribe();
+    const roomGUId = this.roomInputRef.nativeElement.value;
+    this.socket.sentToServer(roomGUId);
+    this.httpRequestS.getRoomById(roomGUId)
+      .subscribe( res =>
+      this.router.navigate(["room"], {queryParams: {roomId: roomGUId}}));
     this.closeDialog();
   }
 }

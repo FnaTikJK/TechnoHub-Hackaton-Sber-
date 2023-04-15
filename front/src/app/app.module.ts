@@ -23,6 +23,7 @@ import { RegistrationComponent } from './components/authorization/registration/r
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {HttpRequestsService} from "./services/http-requests.service";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {HttpRequestsService} from "./services/http-requests.service";
     MatCheckboxModule,
     HttpClientModule,
     FormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatExpansionModule
   ],
   providers: [
     HttpRequestsService,
