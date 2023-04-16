@@ -2,11 +2,13 @@
 using API.DAL.Entities;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace API.Hubs
 {
     public class RoomHub : Hub
     {
+        public static ClaimsPrincipal Claims { get; set; }
         private readonly DataContext dataContext;
 
         public RoomHub(DataContext dataContext)
@@ -21,6 +23,7 @@ namespace API.Hubs
 
         public async Task JoinRoom(string roomId, string userId, string name)
         {
+            Claims = Context.User;
             var room = dataContext.Rooms
                 .Include(e => e.Users)
                 .FirstOrDefault(e => e.Id == new Guid(roomId));
