@@ -1,6 +1,8 @@
 ﻿using API.DAL.Entities;
+using API.Extensions;
 using API.Logic;
 using API.Logic.DTO.Account;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -35,6 +37,13 @@ namespace API.Controllers
             return response.IsSuccess
                 ? Ok(new {token = response.Value})
                 : BadRequest(response.Error);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetToken()
+        {
+            return Ok(new { id = HttpContext.User.GetId() });
         }
     }
 }
